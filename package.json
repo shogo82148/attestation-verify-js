@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/shogo82148/attestation-verify-js/issues"
   },
-  "homepage": "https://github.com/shogo82148/attestation-verify-js#readme"
+  "homepage": "https://github.com/shogo82148/attestation-verify-js#readme",
+  "devDependencies": {
+    "typescript": "^5.5.2"
+  }
 }
