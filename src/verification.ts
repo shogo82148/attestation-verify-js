@@ -4,7 +4,7 @@ import * as tuf from "@sigstore/tuf";
 
 const GitHubOidcIssuer = "https://token.actions.githubusercontent.com";
 
-export async function verifyBundle(obj: unknown) {
+export async function verifyBundle(obj: unknown): Promise<void> {
   const bundle = bundleFromJSON(obj);
   const signedEntity = toSignedEntity(bundle);
 
