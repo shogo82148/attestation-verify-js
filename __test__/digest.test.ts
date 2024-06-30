@@ -1,9 +1,10 @@
 import { calculateDigest } from "../src/digest";
+import * as path from "path";
 
 describe("calculateDigest", () => {
   it("should calculate sha256 digest", async () => {
     const digest = await calculateDigest(
-      "__test__/sigstore-js-2.1.0.tgz",
+      path.join(__dirname, "sigstore-js-2.1.0.tgz"),
       "sha256"
     );
     expect(digest).toBe(
