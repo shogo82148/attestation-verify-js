@@ -34,9 +34,12 @@ export class Client {
     repo: string,
     digest: string
   ): Promise<Attestation[]> {
-    const response = await this.httpClient.getJson<AttestationsResponse>(
-      `https://api.github.com/repos/${repo}/attestations/${digest}`
-    );
+    const url = `https://api.github.com/repos/${repo}/attestations/${digest}`;
+    return await this.get(url);
+  }
+
+  private async get(url: string): Promise<Attestation[]> {
+    const response = await this.httpClient.getJson<AttestationsResponse>(url);
     // TODO: pagination
     // TODO: error handling
     return response.result?.attestations ?? [];
