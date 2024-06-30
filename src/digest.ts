@@ -9,8 +9,8 @@ export async function calculateDigest(
     const hash = crypto.createHash(algorithm);
     const stream = fs.createReadStream(filename);
     stream.on("data", (data) => hash.update(data));
-    stream.on("end", () => resolve(hash.digest("hex")));
+    stream.on("end", () => resolve(`${algorithm}:${hash.digest("hex")}`));
     stream.on("error", (err) => reject(err));
   });
-  return `${algorithm}:${hash}`;
+  return hash;
 }
