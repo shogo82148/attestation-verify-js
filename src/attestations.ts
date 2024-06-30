@@ -38,6 +38,14 @@ export class Client {
     return await this.get(url);
   }
 
+  async getByOwnerAndDigest(
+    owner: string,
+    digest: string
+  ): Promise<Attestation[]> {
+    const url = `https://api.github.com/orgs/${owner}/${digest}`;
+    return await this.get(url);
+  }
+
   private async get(url: string): Promise<Attestation[]> {
     const response = await this.httpClient.getJson<AttestationsResponse>(url);
     // TODO: pagination
