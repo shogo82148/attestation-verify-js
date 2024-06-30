@@ -1,8 +1,9 @@
 {
   "name": "@shogo82148/attestation-verify",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "jest"
@@ -29,5 +30,12 @@
     "@sigstore/bundle": "^2.3.2",
     "@sigstore/tuf": "^2.3.4",
     "@sigstore/verify": "^1.2.1"
-  }
+  },
+  "sideEffects": false,
+  "directories": {
+    "dist": "dist"
+  },
+  "files": [
+    "dist"
+  ]
 }
