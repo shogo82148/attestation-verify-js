@@ -5,7 +5,7 @@ export async function calculateDigest(
   filename: string,
   algorithm: string
 ): Promise<string> {
-  const hash = await new Promise((resolve, reject) => {
+  const hash = await new Promise<string>((resolve, reject) => {
     const hash = crypto.createHash(algorithm);
     const stream = fs.createReadStream(filename);
     stream.on("data", (data) => hash.update(data));
