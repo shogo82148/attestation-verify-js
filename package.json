@@ -29,7 +29,7 @@
     "@actions/http-client": "^2.2.1",
     "@sigstore/bundle": "^2.3.2",
     "@sigstore/tuf": "^2.3.4",
-    "@sigstore/verify": "^1.2.1"
+    "@sigstore/verify": "^2.1.0"
   },
   "sideEffects": false,
   "directories": {
