@@ -32,10 +32,10 @@ export async function verify(
       if (
         owner &&
         ret.extensions.sourceRepositoryOwnerURI !==
-          `https://github/${opts.owner}`
+          `https://github.com/${owner}`
       ) {
         throw new Error(
-          `sourceRepositoryOwnerURI ${ret.extensions.sourceRepositoryOwnerURI} does not match ${opts.owner}`
+          `sourceRepositoryOwnerURI ${ret.extensions.sourceRepositoryOwnerURI} does not match ${owner}`
         );
       }
 
