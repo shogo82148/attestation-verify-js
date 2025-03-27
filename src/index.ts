@@ -61,7 +61,7 @@ export async function verify(
 function verifyDigest(subjects: Subject[], digest: string) {
   for (const subject of subjects) {
     const [algorithm, rawDigest] = digest.split(":");
-    if (subject.digest.get(algorithm) === rawDigest) {
+    if (subject.digest?.get(algorithm) === rawDigest) {
       return;
     }
   }
