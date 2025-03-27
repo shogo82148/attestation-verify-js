@@ -43,7 +43,7 @@ export async function verify(
       if (
         opts.repository &&
         ret.extensions.sourceRepositoryURI !==
-          `https://github/${opts.repository}`
+          `https://github.com/${opts.repository}`
       ) {
         throw new Error(
           `sourceRepositoryURI ${ret.extensions.sourceRepositoryURI} does not match ${opts.repository}`
