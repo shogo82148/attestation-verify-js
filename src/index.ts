@@ -1,6 +1,6 @@
 import { Client, Attestation } from "./attestations";
 import { calculateDigest } from "./digest";
-import { verifyBundle, Subject } from "./verification";
+import { verifyBundle, Subject, Result } from "./verification";
 export interface VerifyOptions {
   algorithm?: string;
   githubToken?: string;
@@ -11,7 +11,7 @@ export interface VerifyOptions {
 export async function verify(
   filename: string,
   opts: VerifyOptions
-): Promise<void> {
+): Promise<Result> {
   const algorithm = opts.algorithm || "sha256";
   const digest = await calculateDigest(filename, algorithm);
 
@@ -23,9 +23,39 @@ export async function verify(
   for (const attestation of attestations) {
     try {
       const ret = await verifyBundle(attestation.bundle);
+
+      // verify the digest
       verifyDigest(ret.statement.subject, digest);
-    } catch (e) {}
+
+      // verify the repository owner
+      const owner = opts.owner || opts.repository?.split("/")[0];
+      if (
+        owner &&
+        ret.extensions.sourceRepositoryOwnerURI !==
+          `https://github/${opts.owner}`
+      ) {
+        throw new Error(
+          `sourceRepositoryOwnerURI ${ret.extensions.sourceRepositoryOwnerURI} does not match ${opts.owner}`
+        );
+      }
+
+      // verify the repository
+      if (
+        opts.repository &&
+        ret.extensions.sourceRepositoryURI !==
+          `https://github/${opts.repository}`
+      ) {
+        throw new Error(
+          `sourceRepositoryURI ${ret.extensions.sourceRepositoryURI} does not match ${opts.repository}`
+        );
+      }
+
+      return ret;
+    } catch (e) {
+      // ignore error
+    }
   }
+  throw new Error(`failed to verify ${filename}`);
 }
 
 function verifyDigest(subjects: Subject[], digest: string) {

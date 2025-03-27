@@ -44,7 +44,7 @@ const oidRunInvocationURI = "1.3.6.1.4.1.57264.1.21";
 const oidSourceRepositoryVisibilityAtSigning = "1.3.6.1.4.1.57264.1.22";
 
 // Extensions contains all custom x509 extensions defined by Fulcio
-interface Extensions {
+export interface Extensions {
   // The OIDC issuer. Should match `iss` claim of ID token or, in the case of
   // a federated login like Dex it should match the issuer URL of the
   // upstream issuer. The issuer is not set the extensions are invalid and
