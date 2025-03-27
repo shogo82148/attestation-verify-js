@@ -1,6 +1,6 @@
 import { Client, Attestation } from "./attestations";
 import { calculateDigest } from "./digest";
-import { verifyBundle } from "./verification";
+import { verifyBundle, Subject } from "./verification";
 export interface VerifyOptions {
   algorithm?: string;
   githubToken?: string;
@@ -21,8 +21,21 @@ export async function verify(
   const attestations = await getRemoteAttestations(client, digest, opts);
 
   for (const attestation of attestations) {
-    await verifyBundle(attestation.bundle);
+    try {
+      const ret = await verifyBundle(attestation.bundle);
+      verifyDigest(ret.statement.subject, digest);
+    } catch (e) {}
   }
+}
+
+function verifyDigest(subjects: Subject[], digest: string) {
+  for (const subject of subjects) {
+    const [algorithm, rawDigest] = digest.split(":");
+    if (subject.digest.get(algorithm) === rawDigest) {
+      return;
+    }
+  }
+  throw new Error(`digest ${digest} not found in the attestation`);
 }
 
 async function getRemoteAttestations(
