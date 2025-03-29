@@ -1,6 +1,8 @@
 import { Client, Attestation } from "./attestations";
 import { calculateDigest } from "./digest";
 import { verifyBundle, Subject, Result } from "./verification";
+import * as core from "@actions/core";
+
 export interface VerifyOptions {
   algorithm?: string;
   githubToken?: string;
@@ -22,6 +24,7 @@ export async function verify(
 
   for (const attestation of attestations) {
     try {
+      core.debug("verifying attestation...");
       const ret = await verifyBundle(attestation.bundle);
 
       // verify the digest
@@ -50,10 +53,18 @@ export async function verify(
         );
       }
 
+      core.debug("verifying attestation succeeded.");
+      core.debug(`sourceRepositoryURI: ${ret.extensions.sourceRepositoryURI}`);
+      for (const entry of ret.bundle.verificationMaterial.tlogEntries) {
+        core.debug(
+          `Log Entry: https://search.sigstore.dev/?logIndex=${entry.logIndex}`
+        );
+      }
       return ret;
     } catch (e) {
-      console.error(e);
-      // ignore error
+      core.warning(
+        `failed to verify attestation: ${e}, continue to next attestation`
+      );
     }
   }
   throw new Error(`failed to verify ${filename}`);

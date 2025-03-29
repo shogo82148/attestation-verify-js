@@ -1,4 +1,5 @@
 import * as http from "@actions/http-client";
+import * as core from "@actions/core";
 
 export type Bundle = { [key: string]: any };
 export type Attestation = {
@@ -52,7 +53,7 @@ export class Client {
     let pagesRemaining = true;
     let result: Attestation[] = [];
     while (pagesRemaining) {
-      console.log(`get ${url}`);
+      core.debug(`get ${url}`);
       const response = await this.httpClient.getJson<AttestationsResponse>(url);
       if (response.statusCode !== 200) {
         throw new Error(`failed to get ${url}: ${response.statusCode}`);

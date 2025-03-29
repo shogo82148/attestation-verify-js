@@ -1,9 +1,10 @@
 import { toSignedEntity, toTrustMaterial, Verifier } from "@sigstore/verify";
-import { bundleFromJSON } from "@sigstore/bundle";
+import { Bundle, bundleFromJSON } from "@sigstore/bundle";
 import * as tuf from "@sigstore/tuf";
 import * as asn1js from "asn1js";
 
 export interface Result {
+  bundle: Bundle;
   statement: Statement;
   extensions: Extensions;
 }
@@ -169,7 +170,7 @@ export async function verifyBundle(obj: unknown): Promise<Result> {
       certificate.extension(oidSourceRepositoryVisibilityAtSigning)?.value
     ),
   };
-  return { statement, extensions };
+  return { bundle, statement, extensions };
 }
 
 function parseDERString(val?: Buffer): string | undefined {
