@@ -1,24 +1,31 @@
 import * as http from "@actions/http-client";
 import * as attestations from "../src/attestations";
+import { TypedResponse } from "@actions/http-client/lib/interfaces";
 
 describe("attestations", () => {
   it("should get attestations", async () => {
     let url = "";
     const getJson = jest
       .spyOn(http.HttpClient.prototype, "getJson")
-      .mockImplementation(async (u: string): Promise<any> => {
-        url = u;
-        const result: attestations.Attestation = {
-          bundle: {
-            foo: "bar",
-          },
-        };
-        return {
-          result: {
-            attestations: [result],
-          },
-        };
-      });
+      .mockImplementation(
+        async (
+          u: string
+        ): Promise<TypedResponse<attestations.AttestationsResponse>> => {
+          url = u;
+          const result: attestations.Attestation = {
+            bundle: {
+              foo: "bar",
+            },
+          };
+          return {
+            headers: {},
+            statusCode: 200,
+            result: {
+              attestations: [result],
+            },
+          };
+        }
+      );
 
     const client = new attestations.Client();
     const list = await client.getByRepoAndDigest(

@@ -1,9 +1,10 @@
 import { toSignedEntity, toTrustMaterial, Verifier } from "@sigstore/verify";
-import { bundleFromJSON } from "@sigstore/bundle";
+import { Bundle, bundleFromJSON } from "@sigstore/bundle";
 import * as tuf from "@sigstore/tuf";
 import * as asn1js from "asn1js";
 
 export interface Result {
+  bundle: Bundle;
   statement: Statement;
   extensions: Extensions;
 }
@@ -12,7 +13,7 @@ export interface Statement {
   _type: string;
   subject: Subject[];
   predicateType: string;
-  predicate: Map<string, any>;
+  predicate: { [key: string]: any };
 }
 
 export interface Subject {
@@ -20,7 +21,7 @@ export interface Subject {
   digest: Digest;
 }
 
-export type Digest = Map<string, string>;
+export type Digest = { [key: string]: string };
 
 const GitHubOidcIssuer = "https://token.actions.githubusercontent.com";
 
@@ -169,7 +170,7 @@ export async function verifyBundle(obj: unknown): Promise<Result> {
       certificate.extension(oidSourceRepositoryVisibilityAtSigning)?.value
     ),
   };
-  return { statement, extensions };
+  return { bundle, statement, extensions };
 }
 
 function parseDERString(val?: Buffer): string | undefined {
