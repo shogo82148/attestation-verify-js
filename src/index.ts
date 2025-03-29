@@ -52,6 +52,7 @@ export async function verify(
 
       return ret;
     } catch (e) {
+      console.error(e);
       // ignore error
     }
   }
@@ -61,7 +62,7 @@ export async function verify(
 function verifyDigest(subjects: Subject[], digest: string) {
   for (const subject of subjects) {
     const [algorithm, rawDigest] = digest.split(":");
-    if (subject.digest?.get(algorithm) === rawDigest) {
+    if (subject.digest[algorithm] === rawDigest) {
       return;
     }
   }

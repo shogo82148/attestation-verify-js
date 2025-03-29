@@ -12,7 +12,7 @@ export interface Statement {
   _type: string;
   subject: Subject[];
   predicateType: string;
-  predicate: Map<string, any>;
+  predicate: { [key: string]: any };
 }
 
 export interface Subject {
@@ -20,7 +20,7 @@ export interface Subject {
   digest: Digest;
 }
 
-export type Digest = Map<string, string>;
+export type Digest = { [key: string]: string };
 
 const GitHubOidcIssuer = "https://token.actions.githubusercontent.com";
 
