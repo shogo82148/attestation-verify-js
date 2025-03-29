@@ -6,7 +6,7 @@ export type Attestation = {
   bundle: Bundle;
 };
 
-type AttestationsResponse = {
+export type AttestationsResponse = {
   attestations: Attestation[];
 };
 
